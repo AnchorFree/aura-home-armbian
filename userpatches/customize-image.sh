@@ -18,6 +18,8 @@ BOARD=$3
 BUILD_DESKTOP=$4
 
 Main() {
+	InstallAurahome
+
 	case $RELEASE in
 		stretch)
 			# your code here
@@ -43,7 +45,7 @@ InstallOpenMediaVault() {
 	# image (OMV 3 on Jessie, OMV 4 with Stretch). Use of mainline kernel highly
 	# recommended!
 	#
-	# Please note that this variant changes Armbian default security 
+	# Please note that this variant changes Armbian default security
 	# policies since you end up with root password 'openmediavault' which
 	# you have to change yourself later. SSH login as root has to be enabled
 	# through OMV web UI first
@@ -75,7 +77,7 @@ InstallOpenMediaVault() {
 	deb https://openmediavault.github.io/packages/ ${OMV_Name} main
 	## Uncomment the following line to add software from the proposed repository.
 	deb https://openmediavault.github.io/packages/ ${OMV_Name}-proposed main
-	
+
 	## This software is not part of OpenMediaVault, but is offered by third-party
 	## developers as a service to OpenMediaVault users.
 	# deb https://openmediavault.github.io/packages/ ${OMV_Name} partner
@@ -112,7 +114,7 @@ InstallOpenMediaVault() {
 	# install OMV extras, enable folder2ram and tweak some settings
 	FILE=$(mktemp)
 	wget "$OMV_EXTRAS_URL" -qO $FILE && dpkg -i $FILE
-	
+
 	/usr/sbin/omv-update
 	# Install flashmemory plugin and netatalk by default, use nice logo for the latter,
 	# tweak some OMV settings
@@ -240,5 +242,124 @@ InstallAdvancedDesktop()
 	[[ -f /usr/share/doc/avahi-daemon/examples/ssh.service ]] && cp /usr/share/doc/avahi-daemon/examples/ssh.service /etc/avahi/services/
 	apt clean
 } # InstallAdvancedDesktop
+
+InstallAurahome()
+{
+	sed -i '/.* \/ ext4/ s/commit=[0-9]*/commit=60/' /etc/fstab
+
+	#echo 'extraargs="maxcpus=2"' >>/boot/armbianEnv.txt
+	echo root:pstest123 | chpasswd
+	rm /root/.not_logged_in_yet
+	touch /root/.no_rootfs_resize
+
+	KEYRING=/usr/share/keyrings/pango-home-archive-keyring.gpg
+	cat >/etc/apt/sources.list.d/pango-home.list <<- EOF
+	deb [signed-by=$KEYRING] https://deb-packages.home.pango.co/ stable main
+	EOF
+
+	base64 --decode >$KEYRING <<- EOF
+	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
+	EOF
+
+	apt update
+	apt install -yyq tmux vim avahi-daemon libnss-mdns dnsmasq iptables-persistent libwebsockets8 libjansson4 libevent-2.1-6 libevent-openssl-2.1-6 libevent-pthreads-2.1-6 libbpf4.19 xml2 socat jq avahi-utils nmap python3-nmap ifplugd pango-home pango-home-overlayroot
+
+	echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf
+	echo "net.ipv6.conf.all.forwarding=1" >>/etc/sysctl.conf
+	echo "net.ipv6.conf.eth0.accept_ra=2" >>/etc/sysctl.conf
+
+	cat >/etc/network/interfaces <<- EOF
+	source /etc/network/interfaces.d/*
+
+	auto lo
+	iface lo inet loopback
+
+	auto eth0
+	allow-hotplug eth0
+	iface eth0 inet dhcp
+	EOF
+
+	echo "nameserver 8.8.8.8" >/etc/resolv.conf
+	echo "pangosec" >/etc/hostname
+
+	cat >/etc/avahi/avahi-daemon.conf <<-EOF
+	[server]
+	use-ipv4=yes
+	use-ipv6=no
+	ratelimit-interval-usec=1000000
+	ratelimit-burst=1000
+
+	[wide-area]
+	enable-wide-area=yes
+
+	[publish]
+	publish-hinfo=no
+	publish-workstation=no
+	EOF
+
+	cat >/etc/default/ifplugd <<-EOF
+	INTERFACES="eth0"
+	HOTPLUG_INTERFACES=""
+	ARGS="-q -f -u0 -d5 -w -I -p"
+	SUSPEND_ACTION="stop"
+	EOF
+
+	cat >/etc/ifplugd/action.d/ifupdown <<-EOF
+	#!/bin/sh
+	set -e
+
+	case "\$2" in
+	up)
+		systemctl restart networking
+		#/sbin/ifup \$1
+		;;
+	down)
+		#/sbin/ifdown \$1
+		;;
+	esac
+	EOF
+
+	systemctl enable ifplugd
+
+	systemctl disable NetworkManager
+	systemctl enable avahi-daemon
+
+	cat > /etc/overlayroot.local.conf <<- EOF
+	overlayroot_cfgdisk="disabled"
+	overlayroot="/dev/mmcblk0p2"
+	debug=1
+	recurse=0
+	EOF
+} # InstallAurahome
 
 Main "$@"
