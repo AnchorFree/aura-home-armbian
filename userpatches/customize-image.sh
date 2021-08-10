@@ -292,7 +292,7 @@ InstallAurahome()
 	EOF
 
 	apt update
-	apt install -yyq tmux vim avahi-daemon libnss-mdns dnsmasq iptables-persistent libwebsockets8 libjansson4 libevent-2.1-6 libevent-openssl-2.1-6 libevent-pthreads-2.1-6 libbpf4.19 xml2 socat jq avahi-utils nmap python3-nmap ifplugd pango-home pango-home-overlayroot
+	apt install -yyq tmux vim avahi-daemon libnss-mdns dnsmasq iptables-persistent libwebsockets8 libjansson4 libevent-2.1-6 libevent-openssl-2.1-6 libevent-pthreads-2.1-6 libbpf4.19 xml2 socat jq avahi-utils nmap python3-nmap ifplugd aura-home
 
 	echo "net.ipv4.ip_forward=1" >>/etc/sysctl.conf
 	echo "net.ipv6.conf.all.forwarding=1" >>/etc/sysctl.conf
