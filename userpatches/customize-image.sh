@@ -314,7 +314,7 @@ InstallAurahome()
 	EOF
 
 	echo "nameserver 8.8.8.8" >/etc/resolv.conf
-	echo "pangosec" >/etc/hostname
+	echo "aurahome" >/etc/hostname
 
 	cat >/etc/avahi/avahi-daemon.conf <<-EOF
 	[server]
