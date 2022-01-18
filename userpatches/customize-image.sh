@@ -298,7 +298,7 @@ bLAGc+4kiAn8NwB5tiTKu5vlYi33xR7aVGvH/+mrz+LPpG08rw==
 EOF
 
 	apt update
-	apt install -yyq tmux vim avahi-daemon libnss-mdns dnsmasq iptables-persistent         \
+	apt install -yyq tmux vim avahi-daemon libnss-mdns iptables-persistent         \
 	                 libwebsockets8 libjansson4 libevent-2.1-6 libevent-openssl-2.1-6      \
 	                 libevent-pthreads-2.1-6 libbpf4.19 xml2 socat jq avahi-utils nmap     \
 	                 python3-nmap ifplugd perseus perseus-led perseus-update uuid-runtime  \
